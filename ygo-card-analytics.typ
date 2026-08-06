@@ -60,6 +60,7 @@
 }
 #show link: it => underline(offset: 2.5pt, stroke: 1.5pt, it)
 #let lq-diagram(labels, values, width: 0% + 12cm, height: 0% + 6cm) = figure(lq.diagram(
+    margin: (x: 1%, y: 1%),
     grid: none,
     width: width,
     height: height,
@@ -76,7 +77,8 @@
             pad(.5em, text(10pt)[#y]),
         )),
 ))
-#let lq-hdiagram(labels, values, width: 0% + 12cm, height: 0% + 6cm) = figure(lq.diagram(
+#let lq-hdiagram(labels, values, width: 0% + 12cm, height: 0% + 6cm, margin: (x: 0%, y: 6%)) = figure(lq.diagram(
+    margin: margin,
     grid: none,
     width: width,
     height: height,
@@ -130,17 +132,6 @@
 )
 #lq-diagram(labels, values)
 
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for card in ot-json {
-//         let key = if card.alias != 0 { str(card.alias) } else { continue }
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
-//     (kvs.keys().map(id => ot-json.find(card => card.id == int(id)).name), kvs.values())
-// }
-// #lq-hdiagram(labels, values)
-
 === 禁限
 
 ==== OCG
@@ -166,19 +157,6 @@
     (kvs.keys(), kvs.values())
 }
 #lq-hdiagram(labels, values, height: 20cm)
-
-// === 效果文本长
-
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for card in ot-json {
-//         let key = str(card.description.len())
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a >= b).to-dict()
-//     (kvs.keys(), kvs.values())
-// }
-// #lq-hdiagram(labels, values, height: 18cm)
 
 == 怪兽
 
@@ -272,45 +250,6 @@
     .len())
 #lq-hdiagram(labels, values)
 
-// === 攻击力
-
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for monster in monsters {
-//         let key = str(monster.atk)
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(0), by: (a, b) => int(a) <= int(b)).to-dict()
-//     (kvs.keys(), kvs.values())
-// }
-// #lq-hdiagram(labels, values,height:25cm)
-
-// === 守备力
-
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for monster in monsters {
-//        let key = if "def" in monster { str(monster.def) } else { continue }
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(0), by: (a, b) => int(a) <= int(b)).to-dict()
-//     (kvs.keys(), kvs.values())
-// }
-// #lq-hdiagram(labels, values,height:25cm)
-
-// === 灵摆效果文本长
-
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for monster in monsters {
-//         let key = if "pendulumDescription" in monster { str(monster.pendulumDescription.len()) } else { continue }
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a >= b).to-dict()
-//     (kvs.keys(), kvs.values())
-// }
-// #lq-hdiagram(labels, values, height: 18cm)
-
 === 灵摆刻度
 
 #let labels = range(0, 15).map(str)
@@ -403,17 +342,6 @@
 )
 #lq-diagram(labels, values)
 
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for card in rd-json {
-//         let key = if card.alias != 0 { str(card.alias) } else { continue }
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
-//     (kvs.keys().map(id => rd-json.find(card => card.id == int(id)).name), kvs.values())
-// }
-// #lq-hdiagram(labels, values)
-
 === 禁限
 
 #let labels = ("禁止", "限制", "准限制")
@@ -432,19 +360,6 @@
     (kvs.keys(), kvs.values())
 }
 #lq-hdiagram(labels, values, height: 16cm)
-
-// === 效果文本长
-
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for card in rd-json {
-//         let key = str(card.description.len())
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a >= b).to-dict()
-//     (kvs.keys(), kvs.values())
-// }
-// #lq-hdiagram(labels, values, height: 18cm)
 
 == 怪兽
 
@@ -516,32 +431,6 @@
     .len())
 #lq-hdiagram(labels, values)
 
-// === 攻击力
-
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for monster in monsters {
-//         let key = str(monster.atk)
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(0), by: (a, b) => int(a) <= int(b)).to-dict()
-//     (kvs.keys(), kvs.values())
-// }
-// #lq-hdiagram(labels, values,height:25cm)
-
-// === 守备力
-
-// #let (labels, values) = {
-//     let kvs = (:)
-//     for monster in monsters {
-//        let key = str(monster.def)
-//         kvs.insert(key, kvs.at(key, default: 0) + 1)
-//     }
-//     let kvs = kvs.pairs().sorted(key: pair => pair.at(0), by: (a, b) => int(a) <= int(b)).to-dict()
-//     (kvs.keys(), kvs.values())
-// }
-// #lq-hdiagram(labels, values,height:25cm)
-
 == 魔法
 
 #let spells = rd-json.filter(card => card.type.contains("魔法"))
@@ -577,3 +466,145 @@
     (kvs.keys(), kvs.values())
 }
 #lq-diagram(labels, values)
+
+= Appendix
+
+这部分图太大，页面尺寸自适应
+
+== OCG & TCG
+
+#let ot-json = json("assets/ot.json")
+
+#show heading.where(level: 3): head => {
+    pagebreak()
+    head
+}
+#set page(footer: none, width: auto, height: auto)
+
+=== 异画
+
+#let (labels, values) = {
+    let kvs = (:)
+    for card in ot-json {
+        let key = if card.alias != 0 and not card.type.contains("衍生物") { str(card.alias) } else { continue }
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (
+        kvs.keys().map(id => ot-json.find(card => card.id == int(id)).name),
+        kvs.values(),
+    )
+}
+#lq-hdiagram(labels, values, height: 140cm, width: 20cm, margin: (x: 0%, y: 0%))
+
+=== 效果文本长
+
+#let (labels, values) = {
+    let kvs = (:)
+    for card in ot-json {
+        let key = str(card.description.len())
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (kvs.keys(), kvs.values())
+}
+#lq-hdiagram(labels, values, height: 180cm, width: 20cm, margin: (x: 0%, y: 0%))
+
+#let monsters = ot-json.filter(card => card.type.contains("怪兽"))
+
+=== 攻击力
+
+#let (labels, values) = {
+    let kvs = (:)
+    for monster in monsters {
+        let key = str(monster.atk)
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (kvs.keys(), kvs.values())
+}
+#lq-hdiagram(labels, values, height: 30cm, width: 20cm, margin: (x: 0%, y: 1%))
+
+=== 守备力
+
+#let (labels, values) = {
+    let kvs = (:)
+    for monster in monsters {
+        let key = if "def" in monster { str(monster.def) } else { continue }
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (kvs.keys(), kvs.values())
+}
+#lq-hdiagram(labels, values, height: 30cm, margin: (x: 0%, y: 1%))
+
+=== 灵摆效果文本长
+
+#let (labels, values) = {
+    let kvs = (:)
+    for monster in monsters {
+        let key = if "pendulumDescription" in monster { str(monster.pendulumDescription.len()) } else { continue }
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (kvs.keys(), kvs.values())
+}
+#lq-hdiagram(labels, values, height: 80cm, margin: (x: 0%, y: 0%))
+
+== Rush Duel
+
+#let rd-json = json("assets/rd.json")
+
+=== 异画
+
+#let (labels, values) = {
+    let kvs = (:)
+    for card in rd-json {
+        let key = if card.alias != 0 { str(card.alias) } else { continue }
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (kvs.keys().map(id => rd-json.find(card => card.id == int(id)).name), kvs.values())
+}
+#lq-hdiagram(labels, values, height: 80cm, width: 16cm, margin: (x: 0%, y: 0%))
+
+=== 效果文本长
+
+#let (labels, values) = {
+    let kvs = (:)
+    for card in rd-json {
+        let key = str(card.description.len())
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (kvs.keys(), kvs.values())
+}
+#lq-hdiagram(labels, values, height: 160cm, width: 16cm, margin: (x: 0%, y: 0%))
+
+#let monsters = rd-json.filter(card => card.type.contains("怪兽"))
+
+=== 攻击力
+
+#let (labels, values) = {
+    let kvs = (:)
+    for monster in monsters {
+        let key = str(monster.atk)
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (kvs.keys(), kvs.values())
+}
+#lq-hdiagram(labels, values, height: 20cm, width: 16cm, margin: (x: 0%, y: 0%))
+
+=== 守备力
+
+#let (labels, values) = {
+    let kvs = (:)
+    for monster in monsters {
+        let key = str(monster.def)
+        kvs.insert(key, kvs.at(key, default: 0) + 1)
+    }
+    let kvs = kvs.pairs().sorted(key: pair => pair.at(1), by: (a, b) => a <= b).to-dict()
+    (kvs.keys(), kvs.values())
+}
+#lq-hdiagram(labels, values, height: 20cm, width: 16cm, margin: (x: 0%, y: 0%))
