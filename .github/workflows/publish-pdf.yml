@@ -1,0 +1,80 @@
+name: Build and publish PDF
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "*.typ"
+      - "xmake.lua"
+  schedule:
+    # Every Monday at 08:00 in Asia/Shanghai (00:00 UTC).
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes fontconfig fonts-lato fonts-noto-cjk
+          fc-cache --force
+
+      - name: Install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: latest
+
+      - name: Install Typst
+        uses: typst-community/setup-typst@v5
+        with:
+          typst-version: 0.15.1
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download data
+        run: xmake setup
+
+      - name: Compile PDF
+        run: xmake compile
+
+      - name: Prepare Pages site
+        run: |
+          mkdir -p _site
+          cp pages/index.html _site/index.html
+          cp ygo-card-analytics.pdf _site/ygo-card-analytics.pdf
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
